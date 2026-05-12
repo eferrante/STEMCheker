@@ -1,31 +1,15 @@
-import os
 from pathlib import Path
 
-from dotenv import load_dotenv
 import streamlit as st
 from openai import OpenAI
 
-load_dotenv(Path(__file__).parent / ".env")
-
 COMETAPI_BASE_URL = "https://api.cometapi.com/v1"
-MODELS = {
-    "Claude Opus 4.7  — $3 / 1M tokens": "claude-opus-4-7",
-    "Claude Sonnet 4.6 — $2.4 / 1M tokens (cheaper)": "claude-sonnet-4-6",
-}
-DEFAULT_MODEL_LABEL = "Claude Opus 4.7  — $3 / 1M tokens"
+MODEL = "claude-sonnet-4-6"
 
 PROMPT_PLACEHOLDER = "<PROMPT ENTERED IN THE INTERFACE>"
 ANSWER_PLACEHOLDER = "<GOLDEN ANSWER ENTERED IN THE INTERFACE>"
 
 DEFAULT_TEMPLATE = Path(__file__).parent / "default_system_prompt.txt"
-
-
-def get_api_key() -> str:
-    # Streamlit Cloud secrets take priority, then .env / shell env
-    try:
-        return st.secrets["COMETAPI_KEY"]
-    except (KeyError, FileNotFoundError):
-        return os.environ.get("COMETAPI_KEY", "")
 
 
 @st.cache_data
@@ -39,12 +23,13 @@ def stream_content(stream):
             yield chunk.choices[0].delta.content
 
 
-def run_review(client: OpenAI, model: str, prompt_template: str, task_prompt: str, golden_answer: str) -> None:
+def run_review(api_key: str, prompt_template: str, task_prompt: str, golden_answer: str) -> None:
     full_message = prompt_template.replace(PROMPT_PLACEHOLDER, task_prompt).replace(
         ANSWER_PLACEHOLDER, golden_answer
     )
+    client = OpenAI(api_key=api_key, base_url=COMETAPI_BASE_URL)
     stream = client.chat.completions.create(
-        model=model,
+        model=MODEL,
         messages=[{"role": "user", "content": full_message}],
         stream=True,
     )
@@ -59,16 +44,14 @@ st.set_page_config(
     layout="wide",
 )
 
-api_key = get_api_key()
-
 # ── Sidebar ───────────────────────────────────────────────────────────────────
 
 with st.sidebar:
     st.header("Configuration")
-    model_label = st.selectbox("Model", list(MODELS.keys()), index=list(MODELS.keys()).index(DEFAULT_MODEL_LABEL))
-    model = MODELS[model_label]
+    api_key = st.text_input("CometAPI Key", type="password", placeholder="sk-...")
+    st.caption(f"Model: **{MODEL}**")
     if not api_key:
-        st.error("COMETAPI_KEY secret is not configured.")
+        st.warning("Enter your CometAPI key to get started.")
 
 # ── Main UI ───────────────────────────────────────────────────────────────────
 
@@ -106,7 +89,7 @@ check_btn = st.button(
 )
 
 if not api_key:
-    st.info("COMETAPI_KEY is not set. Configure it as a secret in Streamlit Cloud or in the local .env file.")
+    st.info("Enter your CometAPI key in the sidebar to get started.")
 
 if check_btn:
     if not task_prompt.strip():
@@ -120,10 +103,9 @@ if check_btn:
             f"- `{ANSWER_PLACEHOLDER}`"
         )
     else:
-        client = OpenAI(api_key=api_key, base_url=COMETAPI_BASE_URL)
         st.divider()
         st.subheader("Review")
         try:
-            run_review(client, model, prompt_template, task_prompt, golden_answer)
+            run_review(api_key, prompt_template, task_prompt, golden_answer)
         except Exception as exc:
             st.error(f"API error: {exc}")
