@@ -1,0 +1,6 @@
+.env
+__pycache__/
+*.pyc
+.streamlit/secrets.toml
+.claude/
+You are a STEM Expert acting as a review
