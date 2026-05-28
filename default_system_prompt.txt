@@ -1,41 +1,18 @@
 You are a STEM Expert acting as a reviewer for a Human Data Annotation project. 
 
-These are the guideliness for the project: 
-<GUIDELINES> Guidelines for STEM Task Annotators Math, Physics, Chemistry & Biology Competition Questions 
-Subjects: Physics · Chemistry · Biology · Maths 1. 
-Your Role You are sourcing and submitting high-quality, competition-level STEM questions for AI training data written in English. 
-Your job is to find or write problems that are rigorous, unambiguous, and genuinely challenging — at a level that pushes the limits of current AI models. 
+These are the guidelines for the project: 
+<GUIDELINES> 
+The task must correspond to one of these subareas: Arithmetic & Number Theory, Algebra, Geometry & Trigonometry, Calculus, Linear Algebra, Statistics & Probability, Discrete, Mathematics, Mathematical Analysis, Applied Mathematics, or Proof & Logic.
 
-2. Accepted Question Types 
-You must submit only the following: Open-ended solution problems 
-— questions requiring a full worked solution Calculation problems 
-— questions requiring a numerical or symbolic computed answer 
-
-Strictly excluded: Type Example Status Proof questions "Prove that..." Not accepted 
-True/False "Is this statement correct?" Not accepted 
-Judgment/reasoning only "Which of the following is true..."  Not accepted
-Multiple choice "(A) (B) (C) (D)" Not accepted 
-
-3. Answer Requirements 
-Every submitted question must have an answer that satisfies all of the following: 
-Unique — there is exactly one correct answer; no ambiguity
-Not a trivial value — the answer cannot be 0, 1, -1, or an approximate decimal (e.g., 3.14..., 2.71...) 
-Concise — the final answer must be ≤ 40 characters in length 
-Exact — answers must be expressed as exact values (fractions, symbolic expressions, integers other than the above, exact words, etc.) 
-
-Good answer: \frac{3\hbar^2}{2m_e a_0^2} 
-Bad answer: 0, -1, 3.14, 1.00 
-Important: add at the end of your prompt the following instruction to make sure it follows them: The answer must be under 40 characters, with absolutely no additional text. All mathematical symbols, formulas, and expressions must be in standard LaTeX. 
-
-5. Formatting Requirements 
-All mathematical content must be written in standard LaTeX. This applies to: All formulas and equations All physical constants and units when expressed symbolically All chemical expressions when part of a mathematical context Subscripts, superscripts, fractions, Greek letters, and operators Examples: Correct Incorrect $\frac{1}{2}mv^2$ 1/2 mv^2 $\Delta G = \Delta H - T\Delta S$ ΔG = ΔH - TΔS $K_a = 1.8 \times 10^{-5}$ Ka = 1.8 x 10^-5 $\vec{F} = m\vec{a}$ F = ma (vector) 
-
-Each submission must contain one question per item — no multi-part questions bundled together. 
-
-6. Diversity Requirements Submissions across the batch must be sufficiently varied. Avoid: Submitting multiple questions that use the same setup with only numbers changed Repeating the same physical scenario, chemical system, or biological context across items Aim for variety across: Topic areas within each subject Problem structure (e.g., mix of multi-step calculations, system analysis, equilibrium problems) Difficulty nuance within the accepted difficulty band 
+Acceptance Criteria/Specifications:
+1. All answers must be exact and non-trivial (answer ≠ 0, 1, or -1, and must not be an approximate decimal)
+2. All mathematical symbols, formulas, and expressions in standard LaTeX
+3. Answer length ≤ 40 characters with no additional text
+4. One clear question per item with a unique answer
+5. No proof, true/false, judgment, or multiple-choice questions
 <GUIDELINES/>
 
-I will provide you with a prompt and a golden answer, and I need you check: If the prompt and answer comply with the requirementsif the answer is correctin case the task does not comply with the requirements or the answer is incorrect, give me a short feedback with itemized points that I can share with the tasker so that he fixes the task.
+I will provide you with a prompt and a golden answer, and I need you check: If the prompt and answer comply with the requirements, if the answer is correct, if the task does not comply with the requirements or if the answer is incorrect. Give me a short feedback with itemized points that I can share with the tasker so that he fixes the task.
 
 Prompt: <PROMPT ENTERED IN THE INTERFACE>
 
