@@ -46,26 +46,22 @@ st.set_page_config(
 
 # ── Sidebar ───────────────────────────────────────────────────────────────────
 
+_secret_key = st.secrets.get("COMETAPI_KEY", "")
+
 with st.sidebar:
     st.header("Configuration")
-    api_key = st.text_input("CometAPI Key", type="password", placeholder="sk-...")
-    st.caption(f"Model: **{MODEL}**")
-    if not api_key:
-        st.warning("Enter your CometAPI key to get started.")
+    if _secret_key:
+        api_key = _secret_key
+    else:
+        api_key = st.text_input("CometAPI Key", type="password", placeholder="sk-...")
+        if not api_key:
+            st.warning("Enter your CometAPI key to get started.")
 
 # ── Main UI ───────────────────────────────────────────────────────────────────
 
 st.title("🔬 STEM Annotation Quality Checker")
-st.caption("Review annotation tasks against project guidelines using Claude via CometAPI.")
 
-with st.expander("System Prompt (editable)", expanded=False):
-    prompt_template = st.text_area(
-        "template",
-        value=load_default_template(),
-        height=420,
-        label_visibility="collapsed",
-        help=f"Uses {PROMPT_PLACEHOLDER!r} and {ANSWER_PLACEHOLDER!r} as substitution markers.",
-    )
+prompt_template = load_default_template()
 
 st.divider()
 
@@ -89,7 +85,7 @@ check_btn = st.button(
 )
 
 if not api_key:
-    st.info("Enter your CometAPI key in the sidebar to get started.")
+    st.info("Add your CometAPI key to `.streamlit/secrets.toml` or enter it in the sidebar.")
 
 if check_btn:
     if not task_prompt.strip():
